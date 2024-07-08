@@ -15,7 +15,7 @@ return {
     Str = function(elem)
       local t = parser.citation:match(elem.text)
       if t then
-        return build_link(t)
+        return { build_link(t), pandoc.Str(parser.get_punct(t)) }
       end
     end,
   },
