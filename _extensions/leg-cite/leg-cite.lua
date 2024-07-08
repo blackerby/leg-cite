@@ -15,7 +15,7 @@ return {
     Str = function(elem)
       local t = parser.citation:match(elem.text)
       if t then
-        return build_link(parser.citation:match(elem.text))
+        return build_link(t)
       end
     end,
   },
