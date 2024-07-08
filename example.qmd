@@ -1,0 +1,11 @@
+---
+title: "Leg-cite Example"
+filters:
+  - leg-cite
+---
+
+## Heading
+
+This filter adds formatting to heading text.
+
+
