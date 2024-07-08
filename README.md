@@ -1,19 +1,18 @@
 # leg-cite Extension For Quarto
 
-This filter implements legislation citation shortcodes. Given a short citation like `118hr8070` between curly brackets (`{}`), i.e., {118hr8070}, the rendered Quarto document will display a link to the bill, resolution, or amendment referenced by the citation on Congress.gov.
+This filter implements citation shortcodes for United States House and Senate bills, resolutions, and amendments. Given a short citation like `118hr8070` between curly brackets (a.k.a. braces &mdash; `{}`),  the rendered Quarto document will display a link to the bill, resolution, or amendment referenced by the citation on Congress.gov.
 
 ## Installing
 
 ```bash
 quarto add blackerby/leg-cite
 ```
-
 This will install the extension under the `_extensions` subdirectory.
 If you're using version control, you will want to check in this directory.
 
 ## Using
 
-_TODO_: Describe how to use your extension.
+Usage is simple: with `leg-cite` included in the filter list in the header of your `qmd` document, place a short citation, like `118hr8070`, between curly brackets (`{}`) in your text, i.e., {118hr8070}, and when rendered, your document will display a link to the legislation referenced by the citation on Congress.gov: [H.R.8070](https://www.congress.gov/bill/118th-congress/house-bill/8070). 
 
 ## Example
 
