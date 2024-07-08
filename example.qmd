@@ -4,7 +4,10 @@ filters:
   - leg-cite
 ---
 
-This filter implements citation shortcodes for United States House and Senate bills, resolutions, and amendments. Given a short citation like `118hr8070` between curly brackets (a.k.a. braces &mdash; `{}`),  the rendered Quarto document will display a link to the bill, resolution, or amendment referenced by the citation on Congress.gov: {118hr8070}.
+This filter implements citation shortcodes for United States House and Senate bills, resolutions, and amendments.
+
+Given a short citation like `118hr8070` between curly brackets (a.k.a. braces &mdash; `{}`), the rendered Quarto document
+will display a link to the bill, resolution, or amendment referenced by the citation on Congress.gov: {118hr8070}.
 
 If I don't supply the Congress in the shortcode, `leg-cite` defaults to the current Congress, like so: {s100}.
 
