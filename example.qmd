@@ -16,3 +16,5 @@ Here are amendment examples from the 115th Congress: {115hamdt1}, {114samdt5}.
 Short versions of the above: {115ha1}, {114sa5}.
 
 Curly brackets are necessary. Without them, you get the text of the short citation as you wrote it: 118hr8070.
+
+{118samdt5} starts this sentence.

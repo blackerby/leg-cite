@@ -69,18 +69,31 @@ local function build_content(t)
   return cite
 end
 
+local function get_punct(t)
+  local punct
+
+  if t.punct then
+    punct = t.punct
+  else
+    punct = ''
+  end
+  return punct
+end
+
 -- parser
 -- TODO: investigate rewriting with re syntax
 local natural = ((loc.digit - '0') * loc.digit ^ 0) ^ 1
+local punct = Cg(loc.punct ^ 0, 'punct')
 local congress = natural
 local resolution = (P 'con' + P 'j') ^ -1 * P 'res'
 local amendment = P 'a' * P 'mdt' ^ -1
 local house = Cg(P('h', 'chamber') / set_chamber, 'chamber') * Cg((resolution + P 'r' + amendment) ^ -1 / set_type, 'type')
 local senate = Cg(P('s', 'chamber') / set_chamber, 'chamber') * Cg((resolution + amendment) ^ -1 / set_type, 'type')
-local citation = P '{' * Ct(Cg(congress ^ -1 / confirm_congress, 'congress') * (house + senate) * Cg(natural, 'num')) * P '}'
+local citation = P '{' * Ct(Cg(congress ^ -1 / confirm_congress, 'congress') * (house + senate) * Cg(natural, 'num') * P '}' * punct)
 
 return {
   citation = citation,
   build_url = build_url,
   build_content = build_content,
+  get_punct = get_punct,
 }
