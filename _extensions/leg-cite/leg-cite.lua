@@ -20,37 +20,3 @@ return {
     end,
   },
 }
-
--- ad hoc tests
--- TODO: investigate "formalizing" test suite
--- https://lunarmodules.github.io/busted/#defining-tests
-
--- local t = citation:match '118hr815'
--- local link = build_link(t)
--- print(link)
---
--- local u = citation:match '118hamdt815'
--- link = build_link(u)
--- print(link)
--- local u = citation:match '118sr815'
--- url = string.format('%s/%s/%s-%s/%s', base_url, u.congress, u.chamber, u.type, u.num)
--- print(url)
-
--- for k, v in pairs(t) do
---   print(k, '=', v)
--- end
--- local t = citation:match 'hr5'
--- for k, v in pairs(t) do
---   print(k, '=', v)
--- end
--- t = citation:match '119hr815'
--- for k, v in pairs(t) do
---   print(k, '=', v)
--- end
-
--- print(citation:match '118hr815')
--- print(citation:match '119hr815')
--- print(citation:match '-1hr815')
--- print(citation:match 'h5')
--- print(citation:match '93hr5')
--- print(citation:match '118hr815.')

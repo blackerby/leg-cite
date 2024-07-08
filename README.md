@@ -1,13 +1,11 @@
-# Leg-cite Extension For Quarto
+# leg-cite Extension For Quarto
 
-_TODO_: Add a short description of your extension.
+This filter implements legislation citation shortcodes. Given a short citation like `118hr8070` between curly brackets (`{}`), i.e., {118hr8070}, the rendered Quarto document will display a link to the bill, resolution, or amendment referenced by the citation on Congress.gov.
 
 ## Installing
 
-_TODO_: Replace the `<github-organization>` with your GitHub organization.
-
 ```bash
-quarto add <github-organization>/leg-cite
+quarto add blackerby/leg-cite
 ```
 
 This will install the extension under the `_extensions` subdirectory.

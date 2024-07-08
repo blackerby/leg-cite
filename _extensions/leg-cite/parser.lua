@@ -3,7 +3,7 @@ local FIRST_CONGRESS_YEAR = 1789
 local CURRENT_YEAR = os.date('*t').year
 local FIRST_CONGRESS = 1
 local CURRENT_CONGRESS = (CURRENT_YEAR - FIRST_CONGRESS_YEAR) // 2 + 1
-local TYPES = { r = 'bill', jres = 'joint-resolution', conres = 'concurrent-resolution', res = 'resolution', amdt = 'amendment' }
+local TYPES = { r = 'bill', jres = 'joint-resolution', conres = 'concurrent-resolution', res = 'resolution', amdt = 'amendment', a = 'amendment' }
 local CITE_TYPES = { bill = 'R.', ['joint-resolution'] = 'J.Res.', ['concurrent-resolution'] = 'Con.Res.', resolution = 'Res.', amendment = 'Amdt.' }
 local BASE_URL = 'https://www.congress.gov'
 
