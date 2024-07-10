@@ -93,14 +93,13 @@ end
 -- TODO: investigate rewriting with re syntax
 local natural = ((loc.digit - '0') * loc.digit ^ 0) ^ 1
 local congress = Cg(natural ^ -1 / confirm_congress, 'congress')
+local num = Cg(natural, 'num')
 local punct = Cg(loc.punct ^ 0, 'punct')
 local resolution = (P 'con' + P 'j') ^ -1 * P 'res'
 local amendment = P 'a' * P 'mdt' ^ -1
 local type = Cg((resolution + amendment) ^ -1 / set_type, 'type')
-local house = Cg(P 'h' * P 'r' ^ -1 / set_chamber, 'chamber')
-local senate = Cg(P 's' / set_chamber, 'chamber')
-local cite = (house + senate) * type
-local num = Cg(natural, 'num')
+local chamber = Cg((P 'h' * P 'r' ^ -1 + P 's') / set_chamber, 'chamber')
+local cite = chamber * type
 local citation = P '{' * Ct(congress * cite * num * P '}' * punct)
 
 return {
