@@ -24,7 +24,7 @@ end
 
 -- set chamber string
 local function set_chamber(c)
-  if c == 'h' then
+  if c == 'h' or c == 'hr' then
     return 'house'
   else
     return 'senate'
@@ -33,7 +33,12 @@ end
 
 -- set type string
 local function set_type(t)
-  return TYPES[t]
+  local type = TYPES[t]
+  if t ~= nil then
+    return type
+  else
+    return 'bill'
+  end
 end
 
 -- set collection
@@ -49,10 +54,10 @@ end
 local function build_url(t)
   local collection = set_collection(t.type)
   local type
-  if t.type == nil then
-    type = 'bill'
-  else
+  if t.type ~= nil then
     type = t.type
+  else
+    type = 'bill'
   end
   local url = string.format('%s/%s/%s/%s-%s/%s', BASE_URL, collection, t.congress, t.chamber, type, t.num)
   return url
@@ -63,7 +68,11 @@ local function build_content(t)
   local num = t.num
   local type = CITE_TYPES[t.type]
   if type == nil then
-    type = ''
+    if chamber == 'H' then
+      type = 'R.'
+    else
+      type = ''
+    end
   end
   local cite = string.format('%s.%s%s', chamber, type, num)
   return cite
@@ -83,13 +92,16 @@ end
 -- parser
 -- TODO: investigate rewriting with re syntax
 local natural = ((loc.digit - '0') * loc.digit ^ 0) ^ 1
+local congress = Cg(natural ^ -1 / confirm_congress, 'congress')
 local punct = Cg(loc.punct ^ 0, 'punct')
-local congress = natural
 local resolution = (P 'con' + P 'j') ^ -1 * P 'res'
 local amendment = P 'a' * P 'mdt' ^ -1
-local house = Cg(P('h', 'chamber') / set_chamber, 'chamber') * Cg((resolution + P 'r' + amendment) ^ -1 / set_type, 'type')
-local senate = Cg(P('s', 'chamber') / set_chamber, 'chamber') * Cg((resolution + amendment) ^ -1 / set_type, 'type')
-local citation = P '{' * Ct(Cg(congress ^ -1 / confirm_congress, 'congress') * (house + senate) * Cg(natural, 'num') * P '}' * punct)
+local type = Cg((resolution + amendment) ^ -1 / set_type, 'type')
+local house = Cg(P 'h' * P 'r' ^ -1 / set_chamber, 'chamber')
+local senate = Cg(P 's' / set_chamber, 'chamber')
+local cite = (house + senate) * type
+local num = Cg(natural, 'num')
+local citation = P '{' * Ct(congress * cite * num * P '}' * punct)
 
 return {
   citation = citation,

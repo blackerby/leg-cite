@@ -18,3 +18,10 @@ Short versions of the above: {115ha1}, {114sa5}.
 Curly brackets are necessary. Without them, you get the text of the short citation as you wrote it: 118hr8070.
 
 {118samdt5} starts this sentence.
+
+More examples:
+
+- {hjres123}
+- {114sres321}
+- {93hconres99}
+- {h4321}
