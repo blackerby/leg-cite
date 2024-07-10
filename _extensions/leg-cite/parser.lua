@@ -90,10 +90,10 @@ end
 -- grammar
 local citation = re.compile(
   [[
-    citation   <- '{' {| congress cite num '}' trail |}
-    congress   <- {:congress: natural? -> confirm_congress :}
-    num        <- {:num: natural :}
+    citation   <- '{' {| congress? cite num '}' trail |}
+    congress   <- {:congress: natural -> confirm_congress :}
     cite       <- chamber type
+    num        <- {:num: natural :}
     type       <- {:type: (resolution / amendment)? -> set_type :}
     trail      <- {:trail: .* :}
     natural    <- [1-9] [0-9]*
