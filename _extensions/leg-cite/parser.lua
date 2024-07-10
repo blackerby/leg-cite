@@ -12,6 +12,9 @@ local lpeg = require 'lpeg'
 local P, Ct, Cg = lpeg.P, lpeg.Ct, lpeg.Cg
 local loc = lpeg.locale()
 
+-- re setup
+local re = require 're'
+
 -- confirm congress number
 local function confirm_congress(c)
   c = tonumber(c)
@@ -89,18 +92,22 @@ local function get_punct(t)
   return punct
 end
 
--- parser
--- TODO: investigate rewriting with re syntax
-local natural = ((loc.digit - '0') * loc.digit ^ 0) ^ 1
-local congress = Cg(natural ^ -1 / confirm_congress, 'congress')
-local num = Cg(natural, 'num')
-local punct = Cg(loc.punct ^ 0, 'punct')
-local resolution = (P 'con' + P 'j') ^ -1 * P 'res'
-local amendment = P 'a' * P 'mdt' ^ -1
-local type = Cg((resolution + amendment) ^ -1 / set_type, 'type')
-local chamber = Cg((P 'h' * P 'r' ^ -1 + P 's') / set_chamber, 'chamber')
-local cite = chamber * type
-local citation = P '{' * Ct(congress * cite * num * P '}' * punct)
+-- grammar
+local citation = re.compile(
+  [[
+    citation <- '{' {| congress cite num '}' punct |}
+    congress <- {:congress: natural? -> confirm_congress :}
+    num <- {:num: natural :}
+    cite <- chamber type
+    natural <- [1-9] [0-9]*
+    punct <- {:punct: %p* :}
+    type <- {:type: (resolution / amendment)? -> set_type :}
+    resolution <- ('con' / 'j')? 'res'
+    amendment <- 'a' 'mdt'?
+    chamber <- {:chamber: 'h' 'r'? / 's' -> set_chamber :}
+  ]],
+  { confirm_congress = confirm_congress, set_type = set_type, set_chamber = set_chamber }
+)
 
 return {
   citation = citation,
