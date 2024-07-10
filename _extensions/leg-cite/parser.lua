@@ -7,11 +7,6 @@ local TYPES = { r = 'bill', jres = 'joint-resolution', conres = 'concurrent-reso
 local CITE_TYPES = { bill = 'R.', ['joint-resolution'] = 'J.Res.', ['concurrent-resolution'] = 'Con.Res.', resolution = 'Res.', amendment = 'Amdt.' }
 local BASE_URL = 'https://www.congress.gov'
 
--- lpeg setup
-local lpeg = require 'lpeg'
-local P, Ct, Cg = lpeg.P, lpeg.Ct, lpeg.Cg
-local loc = lpeg.locale()
-
 -- re setup
 local re = require 're'
 
@@ -81,27 +76,27 @@ local function build_content(t)
   return cite
 end
 
-local function get_punct(t)
-  local punct
+local function get_trail(t)
+  local trail
 
-  if t.punct then
-    punct = t.punct
+  if t.trail then
+    trail = t.trail
   else
-    punct = ''
+    trail = ''
   end
-  return punct
+  return trail
 end
 
 -- grammar
 local citation = re.compile(
   [[
-    citation <- '{' {| congress cite num '}' punct |}
+    citation <- '{' {| congress cite num '}' trail |}
     congress <- {:congress: natural? -> confirm_congress :}
     num <- {:num: natural :}
     cite <- chamber type
-    natural <- [1-9] [0-9]*
-    punct <- {:punct: %p* :}
     type <- {:type: (resolution / amendment)? -> set_type :}
+    trail <- {:trail: .* :}
+    natural <- [1-9] [0-9]*
     resolution <- ('con' / 'j')? 'res'
     amendment <- 'a' 'mdt'?
     chamber <- {:chamber: 'h' 'r'? / 's' -> set_chamber :}
@@ -113,5 +108,5 @@ return {
   citation = citation,
   build_url = build_url,
   build_content = build_content,
-  get_punct = get_punct,
+  get_trail = get_trail,
 }
