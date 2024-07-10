@@ -8,10 +8,10 @@ This filter implements citation macros for United States House and Senate bills,
 # this installs from the main Git branch
 quarto add blackerby/leg-cite
 
-# the latest release is v0.0.2
-quarto add blackerby/leg-cite@v0.0.2
+# the latest release is v0.0.3
+quarto add blackerby/leg-cite@v0.0.3
 
-# you can also install an earlier version
+# an earlier release is also available
 quarto add blackerby/leg-cite@v0.0.1
 ```
 Any of these will install the extension under the `_extensions` subdirectory.

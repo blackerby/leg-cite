@@ -90,8 +90,8 @@ end
 -- grammar
 local citation = re.compile(
   [[
-    citation   <- '{' {| congress? cite num '}' trail |}
-    congress   <- {:congress: natural -> confirm_congress :}
+    citation   <- '{' {| congress cite num '}' trail |}
+    congress   <- {:congress: natural? -> confirm_congress :}
     cite       <- chamber type
     num        <- {:num: natural :}
     type       <- {:type: (resolution / amendment)? -> set_type :}
@@ -99,7 +99,7 @@ local citation = re.compile(
     natural    <- [1-9] [0-9]*
     resolution <- ('con' / 'j')? 'res'
     amendment  <- 'a' 'mdt'?
-    chamber    <- {:chamber: 'h' 'r'? / 's' -> set_chamber :}
+    chamber    <- {:chamber: (('h' 'r'?) / 's') -> set_chamber :}
   ]],
   { confirm_congress = confirm_congress, set_type = set_type, set_chamber = set_chamber }
 )
