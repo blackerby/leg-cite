@@ -97,8 +97,10 @@ local function build_leg_content(t, chamber)
   local num = t.num
   local leg_type = set_leg_type(t.collection)
   local type = CITE_TYPES[leg_type]
-  local cite = string.format('%s.%s%s', chamber_cite, type, num)
-  return cite
+  if chamber_cite == 'S' and leg_type == 'bill' then
+    type = ''
+  end
+  return string.format('%s.%s%s', chamber_cite, type, num)
 end
 
 local function build_nom_content(t)
