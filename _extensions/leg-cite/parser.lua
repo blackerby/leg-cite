@@ -80,11 +80,9 @@ local function build_nom_url(t, congress, collection)
 end
 
 local function build_url(t)
-  print(t.collection)
   local congress = set_congress(t.congress)
   local collection = set_collection(t.collection)
   local chamber = set_chamber(t.collection)
-  print(chamber)
   if chamber ~= nil then
     return build_leg_url(t, congress, chamber, collection)
   else
