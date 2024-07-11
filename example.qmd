@@ -33,3 +33,4 @@ Non-punctuating trailing characters:
 Nominations:
 
 - {pn345}
+- can also write with all caps PN: {117PN123}

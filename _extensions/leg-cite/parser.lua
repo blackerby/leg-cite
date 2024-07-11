@@ -62,17 +62,12 @@ end
 
 -- set type string
 local function set_leg_type(t)
-  local type = TYPES[t]
-  if t ~= nil then
-    return type
-  else
-    return 'bill'
-  end
+  return TYPES[t]
 end
 
 -- set collection
 local function set_collection(c)
-  return COLLECTIONS[c]
+  return COLLECTIONS[string.lower(c)]
 end
 
 local function build_leg_url(t, congress, chamber, collection)
@@ -102,13 +97,6 @@ local function build_leg_content(t, chamber)
   local num = t.num
   local leg_type = set_leg_type(t.collection)
   local type = CITE_TYPES[leg_type]
-  if type == nil then
-    if chamber == 'H' then
-      type = 'R.'
-    else
-      type = ''
-    end
-  end
   local cite = string.format('%s.%s%s', chamber_cite, type, num)
   return cite
 end
@@ -128,7 +116,6 @@ end
 
 local function get_trail(t)
   local trail
-
   if t.trail then
     trail = t.trail
   else
@@ -149,7 +136,7 @@ local citation = re.compile [[
     num         <- {:num: [1-9] [0-9]* :}
     amendment   <- 'a' 'mdt'?
     resolution  <- ('con' / 'j')? 'res'
-    nomination  <- 'pn'
+    nomination  <- 'pn' / 'PN'
   ]]
 
 return {
