@@ -18,6 +18,10 @@ local COLLECTIONS = {
   sres = 'bill',
   samdt = 'amendment',
   sa = 'amendment',
+  hrpt = 'report',
+  hrept = 'report',
+  srpt = 'report',
+  srept = 'report',
 }
 local TYPES = {
   h = 'bill',
@@ -33,6 +37,10 @@ local TYPES = {
   sres = 'resolution',
   samdt = 'amendment',
   sa = 'amendment',
+  hrpt = 'congressional-report',
+  hrept = 'congressional-report',
+  srpt = 'congressional-report',
+  srept = 'congressional-report',
 }
 local CITE_TYPES = { bill = 'R.', ['joint-resolution'] = 'J.Res.', ['concurrent-resolution'] = 'Con.Res.', resolution = 'Res.', amendment = 'Amdt.' }
 local BASE_URL = 'https://www.congress.gov'
@@ -79,6 +87,8 @@ local function build_nom_url(t, congress, collection)
   return string.format('%s/%s/%s/%s', BASE_URL, collection, congress, t.num)
 end
 
+local function build_rept_url(t, congress, chamber, collection) end
+
 local function build_url(t)
   local congress = set_congress(t.congress)
   local collection = set_collection(t.collection)
@@ -105,6 +115,8 @@ local function build_nom_content(t)
   return 'PN' .. t.num
 end
 
+local function build_rept_content(t) end
+
 local function build_content(t)
   local chamber = set_chamber(t.collection)
   if chamber ~= nil then
@@ -124,12 +136,14 @@ local function get_trail(t)
   return trail
 end
 
+-- TODO: extend grammar to allow strings like {118hrept578} and {srpt123}
 -- grammar
 local citation = re.compile [[
     citation    <- '{' {| congress? collection num '}' trail |}
     congress    <- {:congress: [1-9] [0-9]* :}
-    collection  <- {:collection: (legislation / nomination) :}
+    collection  <- {:collection: (legislation / nomination / report) :}
     legislation <- chamber leg_type?
+    report      <-  ('s' / 'h') 'r' 'e'? 'pt'
     chamber     <- 'h' 'r'? / 's'
     leg_type    <- amendment / resolution
     trail       <- {:trail: .* :}
