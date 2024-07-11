@@ -1,6 +1,6 @@
 # leg-cite Extension For Quarto
 
-This filter implements citation macros for United States House and Senate bills, resolutions, and amendments. Given a short citation like `118hr8070` between curly brackets (a.k.a. braces &mdash; `{}`),  the rendered Quarto document will display a link to the bill, resolution, or amendment referenced by the citation on Congress.gov.
+This filter implements citation macros for United States House and Senate bills, resolutions, and amendments, as well as Presidential Nominations. Given a short citation like `118hr8070` between curly brackets (a.k.a. braces &mdash; `{}`),  the rendered Quarto document will display a link to the bill, resolution, amendment, or nomination referenced by the citation on Congress.gov.
 
 ## Installing
 
@@ -9,10 +9,7 @@ This filter implements citation macros for United States House and Senate bills,
 quarto add blackerby/leg-cite
 
 # the latest release is v0.0.3
-quarto add blackerby/leg-cite@v0.0.3
-
-# an earlier release is also available
-quarto add blackerby/leg-cite@v0.0.1
+quarto add blackerby/leg-cite@v0.1.0
 ```
 Any of these will install the extension under the `_extensions` subdirectory.
 If you're using version control, you will want to check in this directory.
