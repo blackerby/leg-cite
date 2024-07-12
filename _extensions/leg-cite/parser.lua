@@ -3,47 +3,11 @@ local FIRST_CONGRESS_YEAR = 1789
 local CURRENT_YEAR = os.date('*t').year
 local FIRST_CONGRESS = 1
 local CURRENT_CONGRESS = (CURRENT_YEAR - FIRST_CONGRESS_YEAR) // 2 + 1
-local COLLECTIONS = {
-  h = 'bill',
-  hr = 'bill',
-  hjres = 'bill',
-  hconres = 'bill',
-  hres = 'bill',
-  hamdt = 'amendment',
-  ha = 'amendment',
-  pn = 'nomination',
-  s = 'bill',
-  sjres = 'bill',
-  sconres = 'bill',
-  sres = 'bill',
-  samdt = 'amendment',
-  sa = 'amendment',
-  hrpt = 'report',
-  hrept = 'report',
-  srpt = 'report',
-  srept = 'report',
-}
-local TYPES = {
-  h = 'bill',
-  hr = 'bill',
-  hjres = 'joint-resolution',
-  hconres = 'concurrent-resolution',
-  hres = 'resolution',
-  hamdt = 'amendment',
-  ha = 'amendment',
-  s = 'bill',
-  sjres = 'joint-resolution',
-  sconres = 'concurrent-resolution',
-  sres = 'resolution',
-  samdt = 'amendment',
-  sa = 'amendment',
-  hrpt = 'congressional-report',
-  hrept = 'congressional-report',
-  srpt = 'congressional-report',
-  srept = 'congressional-report',
-}
-local CITE_TYPES = { bill = 'R.', ['joint-resolution'] = 'J.Res.', ['concurrent-resolution'] = 'Con.Res.', resolution = 'Res.', amendment = 'Amdt.' }
 local BASE_URL = 'https://www.congress.gov'
+
+local mappings = require 'mappings'
+
+local COLLECTIONS, TYPES, CITE_TYPES = mappings.COLLECTIONS, mappings.TYPES, mappings.CITE_TYPES
 
 -- re setup
 local re = require 're'
@@ -87,7 +51,10 @@ local function build_nom_url(t, congress, collection)
   return string.format('%s/%s/%s/%s', BASE_URL, collection, congress, t.num)
 end
 
-local function build_rept_url(t, congress, chamber, collection) end
+local function build_rept_url(t, congress, chamber, collection)
+  local type = TYPES[t.collection]
+  return string.format('%s/%s/%s/%s-%s/%s', BASE_URL, collection, congress, chamber, type, t.num)
+end
 
 local function build_url(t)
   local congress = set_congress(t.congress)
@@ -95,8 +62,10 @@ local function build_url(t)
   local chamber = set_chamber(t.collection)
   if chamber ~= nil then
     return build_leg_url(t, congress, chamber, collection)
-  else
+  elseif collection == 'nomination' then
     return build_nom_url(t, congress, collection)
+  else
+    return build_rept_url(t, congress, chamber, collection)
   end
 end
 
@@ -115,14 +84,21 @@ local function build_nom_content(t)
   return 'PN' .. t.num
 end
 
-local function build_rept_content(t) end
+local function build_rept_content(t, chamber)
+  local chamber_cite = string.upper(string.sub(chamber, 1, 1))
+  local congress = set_congress(t.congress)
+  return string.format('%s. Rept. %s-%s', chamber_cite, congress, t.num)
+end
 
 local function build_content(t)
   local chamber = set_chamber(t.collection)
-  if chamber ~= nil then
+  local collection = set_collection(t.collection)
+  if collection == 'bill' or collection == 'amendment' then
     return build_leg_content(t, chamber)
-  else
+  elseif collection == 'nomination' then
     return build_nom_content(t)
+  else
+    return build_rept_content(t, chamber)
   end
 end
 
@@ -136,12 +112,11 @@ local function get_trail(t)
   return trail
 end
 
--- TODO: extend grammar to allow strings like {118hrept578} and {srpt123}
 -- grammar
 local citation = re.compile [[
     citation    <- '{' {| congress? collection num '}' trail |}
     congress    <- {:congress: [1-9] [0-9]* :}
-    collection  <- {:collection: (legislation / nomination / report) :}
+    collection  <- {:collection: (nomination / report / legislation) :}
     legislation <- chamber leg_type?
     report      <-  ('s' / 'h') 'r' 'e'? 'pt'
     chamber     <- 'h' 'r'? / 's'

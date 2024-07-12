@@ -1,0 +1,46 @@
+local COLLECTIONS = {
+  h = 'bill',
+  hr = 'bill',
+  hjres = 'bill',
+  hconres = 'bill',
+  hres = 'bill',
+  hamdt = 'amendment',
+  ha = 'amendment',
+  pn = 'nomination',
+  s = 'bill',
+  sjres = 'bill',
+  sconres = 'bill',
+  sres = 'bill',
+  samdt = 'amendment',
+  sa = 'amendment',
+  hrpt = 'congressional-report',
+  hrept = 'congressional-report',
+  srpt = 'congressional-report',
+  srept = 'congressional-report',
+}
+local TYPES = {
+  h = 'bill',
+  hr = 'bill',
+  hjres = 'joint-resolution',
+  hconres = 'concurrent-resolution',
+  hres = 'resolution',
+  hamdt = 'amendment',
+  ha = 'amendment',
+  s = 'bill',
+  sjres = 'joint-resolution',
+  sconres = 'concurrent-resolution',
+  sres = 'resolution',
+  samdt = 'amendment',
+  sa = 'amendment',
+  hrpt = 'report',
+  hrept = 'report',
+  srpt = 'report',
+  srept = 'report',
+}
+local CITE_TYPES = { bill = 'R.', ['joint-resolution'] = 'J.Res.', ['concurrent-resolution'] = 'Con.Res.', resolution = 'Res.', amendment = 'Amdt.' }
+
+return {
+  COLLECTIONS = COLLECTIONS,
+  TYPES = TYPES,
+  CITE_TYPES = CITE_TYPES,
+}

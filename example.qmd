@@ -34,3 +34,9 @@ Nominations:
 
 - {pn345}
 - can also write with all caps PN: {117PN123}
+
+Reports:
+
+- {118hrept578}
+- {116srpt123}: optional *e* in short cite
+- {hrept578}: no specified congress
