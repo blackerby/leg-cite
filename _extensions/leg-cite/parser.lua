@@ -42,7 +42,7 @@ local function set_collection(c)
   return COLLECTIONS[string.lower(c)]
 end
 
-local function build_leg_url(t, congress, chamber, collection)
+local function build_chamber_url(t, congress, chamber, collection)
   local type = TYPES[t.collection]
   return string.format('%s/%s/%s/%s-%s/%s', BASE_URL, collection, congress, chamber, type, t.num)
 end
@@ -51,21 +51,14 @@ local function build_nom_url(t, congress, collection)
   return string.format('%s/%s/%s/%s', BASE_URL, collection, congress, t.num)
 end
 
-local function build_rept_url(t, congress, chamber, collection)
-  local type = TYPES[t.collection]
-  return string.format('%s/%s/%s/%s-%s/%s', BASE_URL, collection, congress, chamber, type, t.num)
-end
-
 local function build_url(t)
   local congress = set_congress(t.congress)
   local collection = set_collection(t.collection)
   local chamber = set_chamber(t.collection)
   if chamber ~= nil then
-    return build_leg_url(t, congress, chamber, collection)
+    return build_chamber_url(t, congress, chamber, collection)
   elseif collection == 'nomination' then
     return build_nom_url(t, congress, collection)
-  else
-    return build_rept_url(t, congress, chamber, collection)
   end
 end
 
